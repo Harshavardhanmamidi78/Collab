@@ -2,135 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Free Fire Mini Game</title>
+  <title>Free Fire Redeem Code Generator</title>
   <style>
     body {
-      margin: 0;
-      overflow: hidden;
-      background: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-
-    #game {
-      width: 100vw;
+      background: #0f0f0f;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       height: 100vh;
-      position: relative;
-      background: linear-gradient(#222, #000);
-      cursor: crosshair;
+      margin: 0;
     }
 
-    .enemy {
-      width: 50px;
-      height: 50px;
-      background: red;
-      border-radius: 50%;
-      position: absolute;
-      animation: moveEnemy 5s linear infinite;
+    h1 {
+      color: #ffcc00;
+      margin-bottom: 20px;
     }
 
-    .bullet {
-      width: 5px;
-      height: 20px;
-      background: yellow;
-      position: absolute;
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #ff3c00;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    #health-bar {
-      width: 200px;
-      height: 20px;
-      background: darkred;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      border: 2px solid #fff;
+    button:hover {
+      background-color: #e63300;
     }
 
-    #health {
-      height: 100%;
-      width: 100%;
-      background: limegreen;
+    .code-box {
+      margin-top: 30px;
+      font-size: 28px;
+      background-color: #222;
+      padding: 20px 40px;
+      border-radius: 10px;
+      border: 2px solid #ffcc00;
+      letter-spacing: 3px;
     }
 
-    @keyframes moveEnemy {
-      from {
-        top: 0;
-        left: 0;
-      }
-      to {
-        top: 90%;
-        left: 90%;
-      }
+    .note {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
-  <div id="game">
-    <div id="health-bar">
-      <div id="health"></div>
-    </div>
+
+  <h1>Free Fire Code Generator</h1>
+  <button onclick="generateCode()">Generate Code</button>
+
+  <div class="code-box" id="codeBox">XXXX-XXXX-XXXX</div>
+
+  <div class="note">
+    ⚠️ This is a fake generator for fun. Official codes are released by Garena.
   </div>
 
   <script>
-    const game = document.getElementById('game');
-    const healthBar = document.getElementById('health');
-    let health = 100;
-
-    // Spawn an enemy every 2 seconds
-    function spawnEnemy() {
-      const enemy = document.createElement('div');
-      enemy.classList.add('enemy');
-      enemy.style.left = Math.random() * (window.innerWidth - 50) + 'px';
-      enemy.style.top = Math.random() * (window.innerHeight - 50) + 'px';
-      game.appendChild(enemy);
-
-      // Reduce health if enemy lives for 5s
-      const enemyTimeout = setTimeout(() => {
-        if (document.body.contains(enemy)) {
-          game.removeChild(enemy);
-          health -= 20;
-          updateHealth();
-        }
-      }, 5000);
-    }
-
-    // Shoot bullets on click
-    game.addEventListener('click', (e) => {
-      const bullet = document.createElement('div');
-      bullet.classList.add('bullet');
-      bullet.style.left = e.clientX + 'px';
-      bullet.style.top = e.clientY + 'px';
-      game.appendChild(bullet);
-
-      // Check for hit
-      const enemies = document.querySelectorAll('.enemy');
-      enemies.forEach(enemy => {
-        const rect = enemy.getBoundingClientRect();
-        if (
-          e.clientX >= rect.left &&
-          e.clientX <= rect.right &&
-          e.clientY >= rect.top &&
-          e.clientY <= rect.bottom
-        ) {
-          enemy.remove();
-        }
-      });
-
-      // Remove bullet after animation
-      setTimeout(() => bullet.remove(), 500);
-    });
-
-    // Update health bar
-    function updateHealth() {
-      health = Math.max(0, health);
-      healthBar.style.width = health + '%';
-      if (health <= 0) {
-        alert('Game Over!');
-        location.reload();
+    function generateCode() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = '';
+      for (let i = 0; i < 12; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
       }
+      // Format as XXXX-XXXX-XXXX
+      const formattedCode = code.match(/.{1,4}/g).join('-');
+      document.getElementById('codeBox').textContent = formattedCode;
     }
-
-    setInterval(spawnEnemy, 2000);
   </script>
+
 </body>
 </html>
